@@ -1,1 +1,1 @@
-export declare const name = 'simulation-core';
+export declare const name = "simulation-core";

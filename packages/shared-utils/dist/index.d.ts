@@ -1,1 +1,1 @@
-export declare const name = 'shared-utils';
+export declare const name = "shared-utils";
