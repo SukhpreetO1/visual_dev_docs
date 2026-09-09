@@ -1,9 +1,46 @@
-dist/
-*.log
-.turbo
-.next
+# Dependencies
+node_modules/
+.pnpm-store/
 
-prompts
-node_modules
+# Build and Output directories
+dist/
+dist
+build/
+.next/
+out/
+.turbo/
+
+# Lockfiles (as specified in AGENTS.md Section 14)
 package-lock.json
+yarn.lock
 pnpm-lock.yaml
+
+# Internal documentation, audit files, and credentials (AGENTS.md Section 20 & 20.1)
+doc/
+audit-prompt.md
+.git-credentials
+
+# Environment variables & local secrets
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# System & IDE files
+.DS_Store
+*.pem
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+audit-prompt.md
+.git-credentials
+
+# docs folders
+prompts
