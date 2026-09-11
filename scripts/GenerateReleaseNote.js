@@ -25,7 +25,7 @@ const path = require('path');
 const { execSync } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
-const DOC_DIR = path.join(ROOT, 'doc');
+const DOC_DIR = path.join(ROOT, 'doc', 'release');
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -87,7 +87,7 @@ const timestamp = new Date().toISOString();
 const filename = `release-${timestamp.replace(/[:.]/g, '-')}-${shortHash}.md`;
 const outputPath = path.join(DOC_DIR, filename);
 
-/** 
+/**
  * Formats the header block per AGENTS.md §20.
  */
 function buildHeader() {
@@ -155,12 +155,7 @@ This document is for internal reference only and must not be pushed to the remot
 `;
 }
 
-const content = [
-  buildHeader(),
-  buildChangedFiles(),
-  buildDiffStat(),
-  buildSummary(),
-].join('\n');
+const content = [buildHeader(), buildChangedFiles(), buildDiffStat(), buildSummary()].join('\n');
 
 // ── Write ─────────────────────────────────────────────────────────────────────
 
@@ -169,7 +164,7 @@ try {
     fs.mkdirSync(DOC_DIR, { recursive: true });
   }
   fs.writeFileSync(outputPath, content, 'utf8');
-  console.log(`[GenerateReleaseNote] Written: doc/${filename}`);
+  console.log(`[GenerateReleaseNote] Written: doc/release/${filename}`);
 } catch (err) {
   console.warn('[GenerateReleaseNote] Warning: could not write release note —', err.message);
 }

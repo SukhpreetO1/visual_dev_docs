@@ -4,7 +4,7 @@
  *
  * Engineering audit script for Visual Dev Docs.
  * Runs a series of automated checks against the codebase and generates a
- * full report at doc/review.md (AGENTS.md §20.1).
+ * Full report at doc/review/review-<timestamp>-<hash>.md (AGENTS.md §20.1).
  *
  * Sections produced:
  *   1. Header
@@ -31,8 +31,24 @@ const path = require('path');
 const { execSync } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
-const DOC_DIR = path.join(ROOT, 'doc');
-const OUTPUT = path.join(DOC_DIR, 'review.md');
+
+// Compute timestamp + hash early so they can be used in the filename
+const _auditTimestamp = new Date().toISOString();
+const _auditHash = (() => {
+  try {
+    return require('child_process')
+      .execSync('git rev-parse HEAD', { cwd: ROOT, stdio: ['pipe', 'pipe', 'pipe'] })
+      .toString()
+      .trim()
+      .slice(0, 8);
+  } catch {
+    return 'uncommitted';
+  }
+})();
+
+const REVIEW_DIR = path.join(ROOT, 'doc', 'review');
+const REVIEW_FILENAME = `review-${_auditTimestamp.replace(/[:.]/g, '-')}-${_auditHash}.md`;
+const OUTPUT = path.join(REVIEW_DIR, REVIEW_FILENAME);
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -44,7 +60,9 @@ const OUTPUT = path.join(DOC_DIR, 'review.md');
  */
 function run(cmd) {
   try {
-    const stdout = execSync(cmd, { cwd: ROOT, stdio: ['pipe', 'pipe', 'pipe'] }).toString().trim();
+    const stdout = execSync(cmd, { cwd: ROOT, stdio: ['pipe', 'pipe', 'pipe'] })
+      .toString()
+      .trim();
     return { stdout, stderr: '', code: 0 };
   } catch (err) {
     return {
@@ -84,8 +102,9 @@ function readFile(rel) {
  * @typedef {{ name: string, score: number, max: number, notes: string[] }} Category
  */
 
-const timestamp = new Date().toISOString();
-const commitHash = run('git rev-parse HEAD').stdout.slice(0, 8) || 'uncommitted';
+// Re-use the values computed at the top for filename generation
+const timestamp = _auditTimestamp;
+const commitHash = _auditHash;
 const branchName = run('git rev-parse --abbrev-ref HEAD').stdout || 'unknown';
 const version = readFile('VERSION').trim() || '0.0.0';
 
@@ -164,7 +183,7 @@ const improvements = [];
     compliant++;
   }
 
-  cat.score = Math.min(cat.max, Math.round(((compliant) / (mustIgnore.length + 1)) * cat.max));
+  cat.score = Math.min(cat.max, Math.round((compliant / (mustIgnore.length + 1)) * cat.max));
   categories.push(cat);
 }
 
@@ -226,16 +245,35 @@ const improvements = [];
 // ── 5. Lint & Formatting ──────────────────────────────────────────────────────
 {
   const cat = { name: 'Lint & Formatting', score: 0, max: 10, notes: [] };
-  
+
   const eslintResult = run('pnpm eslint . --max-warnings 0 2>&1 | tail -5');
-  const hasEslintConfig = exists('eslint.config.mjs') || exists('.eslintrc.js') || exists('.eslintrc.json');
-  const hasPrettier = exists('.prettierrc') || exists('.prettierrc.json') || exists('prettier.config.js');
+  const hasEslintConfig =
+    exists('eslint.config.mjs') || exists('.eslintrc.js') || exists('.eslintrc.json');
+  const hasPrettier =
+    exists('.prettierrc') || exists('.prettierrc.json') || exists('prettier.config.js');
   const hasLintStaged = exists('.lintstagedrc') || exists('.lintstagedrc.json');
 
-  if (hasEslintConfig) { cat.score += 3; } else { cat.notes.push('No ESLint config found'); }
-  if (hasPrettier) { cat.score += 3; } else { cat.notes.push('No Prettier config found'); }
-  if (hasLintStaged) { cat.score += 2; } else { cat.notes.push('No lint-staged config found'); }
-  if (eslintResult.code === 0) { cat.score += 2; } else { cat.notes.push('ESLint reported errors'); improvements.push('Fix ESLint errors'); }
+  if (hasEslintConfig) {
+    cat.score += 3;
+  } else {
+    cat.notes.push('No ESLint config found');
+  }
+  if (hasPrettier) {
+    cat.score += 3;
+  } else {
+    cat.notes.push('No Prettier config found');
+  }
+  if (hasLintStaged) {
+    cat.score += 2;
+  } else {
+    cat.notes.push('No lint-staged config found');
+  }
+  if (eslintResult.code === 0) {
+    cat.score += 2;
+  } else {
+    cat.notes.push('ESLint reported errors');
+    improvements.push('Fix ESLint errors');
+  }
 
   cat.score = Math.min(cat.max, cat.score);
   categories.push(cat);
@@ -250,15 +288,41 @@ const improvements = [];
   const hasCommitMsg = exists('.husky/commit-msg');
   const precommit = readFile('.husky/pre-commit');
   const hasVersionBump = precommit.includes('BumpVersion') || precommit.includes('bumpVersion');
-  const hasReleaseNote = precommit.includes('GenerateReleaseNote') || precommit.includes('releaseNote');
+  const hasReleaseNote =
+    precommit.includes('GenerateReleaseNote') || precommit.includes('releaseNote');
   const hasAudit = precommit.includes('RunAudit') || precommit.includes('audit');
 
-  if (hasCommitlint) { cat.score += 2; } else { cat.notes.push('No commitlint config'); }
-  if (hasHusky) { cat.score += 2; } else { cat.notes.push('No pre-commit hook'); }
-  if (hasCommitMsg) { cat.score += 2; } else { cat.notes.push('No commit-msg hook'); }
-  if (hasVersionBump) { cat.score += 2; } else { cat.notes.push('pre-commit does not call BumpVersion.js'); improvements.push('Add BumpVersion.js call to pre-commit hook'); }
-  if (hasReleaseNote) { cat.score += 1; } else { cat.notes.push('pre-commit does not call GenerateReleaseNote.js'); }
-  if (hasAudit) { cat.score += 1; } else { cat.notes.push('pre-commit does not call RunAudit.js'); }
+  if (hasCommitlint) {
+    cat.score += 2;
+  } else {
+    cat.notes.push('No commitlint config');
+  }
+  if (hasHusky) {
+    cat.score += 2;
+  } else {
+    cat.notes.push('No pre-commit hook');
+  }
+  if (hasCommitMsg) {
+    cat.score += 2;
+  } else {
+    cat.notes.push('No commit-msg hook');
+  }
+  if (hasVersionBump) {
+    cat.score += 2;
+  } else {
+    cat.notes.push('pre-commit does not call BumpVersion.js');
+    improvements.push('Add BumpVersion.js call to pre-commit hook');
+  }
+  if (hasReleaseNote) {
+    cat.score += 1;
+  } else {
+    cat.notes.push('pre-commit does not call GenerateReleaseNote.js');
+  }
+  if (hasAudit) {
+    cat.score += 1;
+  } else {
+    cat.notes.push('pre-commit does not call RunAudit.js');
+  }
 
   cat.score = Math.min(cat.max, cat.score);
   categories.push(cat);
@@ -342,7 +406,9 @@ const improvements = [];
   }
 
   if (readme.length > 500) cat.score += 5;
-  else { cat.notes.push('README is very short'); }
+  else {
+    cat.notes.push('README is very short');
+  }
 
   cat.score += Math.round((found / requiredSections.length) * 5);
   cat.score = Math.min(cat.max, cat.score);
@@ -357,10 +423,26 @@ const improvements = [];
   try {
     const t = JSON.parse(turbo);
     const tasks = t.tasks || {};
-    if (tasks.build) { cat.score += 3; } else { cat.notes.push('No "build" task in turbo.json'); }
-    if (tasks.dev) { cat.score += 3; } else { cat.notes.push('No "dev" task in turbo.json'); }
-    if (tasks.lint) { cat.score += 2; } else { cat.notes.push('No "lint" task in turbo.json'); }
-    if (tasks['type-check']) { cat.score += 2; } else { cat.notes.push('No "type-check" task in turbo.json'); }
+    if (tasks.build) {
+      cat.score += 3;
+    } else {
+      cat.notes.push('No "build" task in turbo.json');
+    }
+    if (tasks.dev) {
+      cat.score += 3;
+    } else {
+      cat.notes.push('No "dev" task in turbo.json');
+    }
+    if (tasks.lint) {
+      cat.score += 2;
+    } else {
+      cat.notes.push('No "lint" task in turbo.json');
+    }
+    if (tasks['type-check']) {
+      cat.score += 2;
+    } else {
+      cat.notes.push('No "type-check" task in turbo.json');
+    }
 
     // Check env pass-through for dev
     const devTask = tasks.dev || {};
@@ -395,7 +477,10 @@ function buildScorecard() {
     .map((c) => `| ${c.name.padEnd(30)} | ${String(c.score).padStart(5)} / ${c.max}  |`)
     .join('\n');
 
-  const verdict = overallScore >= 8.5 ? '✅ PASS — ready for next phase' : '❌ FAIL — fix issues before proceeding';
+  const verdict =
+    overallScore >= 8.5
+      ? '✅ PASS — ready for next phase'
+      : '❌ FAIL — fix issues before proceeding';
 
   return `## 3. Overall Scorecard
 
@@ -447,10 +532,12 @@ ${criticalIssues.length === 0 ? '_No critical issues found._' : criticalIssues.m
 
 ## 5. Code Quality Snapshot
 
-${categories.map((c) => {
-  const bar = '█'.repeat(c.score) + '░'.repeat(c.max - c.score);
-  return `### ${c.name} — ${c.score}/${c.max}\n\`${bar}\`\n${c.notes.length ? c.notes.map((n) => `- ${n}`).join('\n') : '_No issues_'}`;
-}).join('\n\n')}
+${categories
+  .map((c) => {
+    const bar = '█'.repeat(c.score) + '░'.repeat(c.max - c.score);
+    return `### ${c.name} — ${c.score}/${c.max}\n\`${bar}\`\n${c.notes.length ? c.notes.map((n) => `- ${n}`).join('\n') : '_No issues_'}`;
+  })
+  .join('\n\n')}
 
 ---
 
@@ -469,14 +556,19 @@ ${improvements.length === 0 ? '_None identified at this stage._' : improvements.
 - [${exists('scripts/GenerateReleaseNote.js') ? 'x' : ' '}] GenerateReleaseNote.js script exists
 - [${exists('scripts/RunAudit.js') ? 'x' : ' '}] RunAudit.js script exists
 - [${exists('AGENTS.md') ? 'x' : ' '}] AGENTS.md present
-- [${criticalIssues.filter(i => i.includes('.env') && i.includes('tracked')).length === 0 ? 'x' : ' '}] No secrets committed to git
+- [${criticalIssues.filter((i) => i.includes('.env') && i.includes('tracked')).length === 0 ? 'x' : ' '}] No secrets committed to git
 - [${run('git ls-files pnpm-lock.yaml').stdout === '' ? 'x' : ' '}] Lock files excluded from git
 
 ---
 
 ## 8. Top 25 Improvements
 
-${[...criticalIssues.map(i => `🔴 (Critical) ${i}`), ...improvements].slice(0, 25).map((i, n) => `${n + 1}. ${i}`).join('\n') || '_No improvements identified._'}
+${
+  [...criticalIssues.map((i) => `🔴 (Critical) ${i}`), ...improvements]
+    .slice(0, 25)
+    .map((i, n) => `${n + 1}. ${i}`)
+    .join('\n') || '_No improvements identified._'
+}
 
 ---
 
@@ -498,11 +590,11 @@ _This report is internal-only and must not be pushed to the remote repository._
 // ── Write ─────────────────────────────────────────────────────────────────────
 
 try {
-  if (!fs.existsSync(DOC_DIR)) {
-    fs.mkdirSync(DOC_DIR, { recursive: true });
+  if (!fs.existsSync(REVIEW_DIR)) {
+    fs.mkdirSync(REVIEW_DIR, { recursive: true });
   }
   fs.writeFileSync(OUTPUT, report, 'utf8');
-  console.log(`[RunAudit] Report written to doc/review.md`);
+  console.log(`[RunAudit] Report written to doc/review/${REVIEW_FILENAME}`);
   console.log('');
   console.log('══════════════════════════════════════════════════════');
   console.log('  OVERALL SCORECARD');
