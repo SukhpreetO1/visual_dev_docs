@@ -79,6 +79,7 @@ Two log types MUST be maintained:
 - **Branch Naming**: `feature/<name>`, `fix/<name>`, `chore/<name>`, `hotfix/<name>`.
 - **Commit Messages**: Follow Conventional Commits (e.g. `feat: add backup worker`, `fix: correct soft-delete filter`).
 - **Pull Requests**: MUST pass CI and have at least one review before merge; PR description must state what changed and why.
+- **Latest Remote Sync**: Before starting any phase or creating a new feature branch, ALWAYS run `git fetch` and `git pull` on the `main` branch to ensure you branch off the latest remote state.
 
 ## 8. Code Style & Tooling
 
