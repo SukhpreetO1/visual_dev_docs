@@ -9,6 +9,8 @@ build/
 .next/
 out/
 .turbo/
+.gemini/
+.cursor/
 
 # Lockfiles (as specified in AGENTS.md Section 14)
 package-lock.json
