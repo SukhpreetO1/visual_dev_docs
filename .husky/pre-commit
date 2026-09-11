@@ -1,1 +1,23 @@
-npx lint-staged
+#!/usr/bin/env sh
+# ── Visual Dev Docs — pre-commit hook (AGENTS.md §20) ────────────────────────
+# Non-blocking: every step is wrapped in || true so a failure is warned but
+# never blocks the commit.
+
+# 1. Bump VERSION file based on the staged commit message
+echo "[pre-commit] Bumping version..."
+node scripts/BumpVersion.js || echo "[pre-commit] Warning: BumpVersion failed (non-blocking)"
+
+# Stage the updated VERSION and package.json so they land in the commit
+git add VERSION package.json 2>/dev/null || true
+
+# 2. Generate a release note in doc/ (internal-only, never pushed)
+echo "[pre-commit] Generating release note..."
+node scripts/GenerateReleaseNote.js || echo "[pre-commit] Warning: GenerateReleaseNote failed (non-blocking)"
+
+# 3. Run engineering audit and print the Overall Scorecard
+echo "[pre-commit] Running engineering audit..."
+node scripts/RunAudit.js || echo "[pre-commit] Warning: RunAudit failed (non-blocking)"
+
+# 4. Run lint-staged (type checking, linting, formatting on staged files)
+echo "[pre-commit] Running lint-staged..."
+npx lint-staged || echo "[pre-commit] Warning: lint-staged failed (non-blocking)"
