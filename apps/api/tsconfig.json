@@ -3,7 +3,6 @@
   "compilerOptions": {
     "module": "nodenext",
     "moduleResolution": "nodenext",
-    "ignoreDeprecations": "6.0",
     "resolvePackageJsonExports": true,
     "esModuleInterop": true,
     "isolatedModules": true,

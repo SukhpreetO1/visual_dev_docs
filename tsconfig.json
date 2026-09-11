@@ -11,7 +11,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
-    "ignoreDeprecations": "6.0",
     "paths": {
       "@visual-dev-docs/*": ["packages/*/src"]
     }
