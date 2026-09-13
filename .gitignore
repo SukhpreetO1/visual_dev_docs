@@ -23,7 +23,7 @@ audit-prompt.md
 .git-credentials
 
 # Environment variables & local secrets
-.env.*
+.env*
 !.env.example
 
 # Logs
