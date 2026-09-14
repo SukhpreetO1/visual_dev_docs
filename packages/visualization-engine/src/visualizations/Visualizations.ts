@@ -17,7 +17,7 @@ export function renderCallStackViz(frame: IVisualizationFrame): string {
     <div class="p-4 bg-slate-900 border border-slate-800 rounded-lg text-sm font-mono text-cyan-400">
       <div class="text-xs text-slate-500 mb-2">[Call Stack Inspector]</div>
       <div class="flex flex-col gap-1">
-        ${frame.call_stack.map(fn => `<div class="bg-indigo-950/80 border border-indigo-500/30 px-3 py-1.5 rounded text-indigo-200">▶ ${fn}</div>`).join('')}
+        ${frame.call_stack.map((fn) => `<div class="bg-indigo-950/80 border border-indigo-500/30 px-3 py-1.5 rounded text-indigo-200">▶ ${fn}</div>`).join('')}
       </div>
     </div>
   `;
@@ -47,7 +47,7 @@ export function renderGitGraphViz(frame: IVisualizationFrame): string {
   return `<div class="p-4 bg-slate-900 border border-slate-800 rounded text-sm text-purple-400">[Git Commit Tree Frame ${frame.frame_index}]</div>`;
 }
 
-export function renderDockerViz(frame: IVisualizationFrame): string {
+export function renderDockerViz(_frame: IVisualizationFrame): string {
   return `<div class="p-4 bg-slate-900 border border-slate-800 rounded text-sm text-emerald-400">[Docker Container State: RUNNING]</div>`;
 }
 

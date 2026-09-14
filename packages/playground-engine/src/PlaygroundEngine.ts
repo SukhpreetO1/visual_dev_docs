@@ -1,5 +1,5 @@
 import { IExecutionResult } from '@visual-dev-docs/shared-types';
-import { ICodeRunner, WebWorkerRunner } from './runners/WebWorkerRunner';
+import { WebWorkerRunner } from './runners/WebWorkerRunner';
 import { PyodideRunner } from './runners/PyodideRunner';
 import { ServerRunner } from './runners/ServerRunner';
 import { DEFAULT_EDITOR_CONFIG, IEditorOptions } from './EditorConfig';
