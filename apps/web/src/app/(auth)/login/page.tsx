@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Eye, EyeOff, ArrowRight, TrendingUp, ArrowLeft } from 'lucide-react';
+import { Eye, EyeOff, ArrowRight, ArrowLeft } from 'lucide-react';
 
 const C = {
   surface: '#0b1326',
@@ -24,7 +24,6 @@ const C = {
   textHeading: '#F1F5F9',
   textMuted: '#94A3B8',
   error: '#ffb4ab',
-  borderSubtle: '#334155',
 };
 
 export default function LoginPage() {
@@ -36,639 +35,560 @@ export default function LoginPage() {
         backgroundColor: C.surface,
         color: C.onSurface,
         fontFamily: "'Inter', sans-serif",
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 16,
-        position: 'relative',
+        height: '100vh',
+        display: 'grid',
+        gridTemplateColumns: '5fr 7fr',
         overflow: 'hidden',
       }}
     >
-      {/* Ambient backdrop gradients */}
+      {/* ── LEFT: Promotional panel ── */}
       <div
         style={{
-          position: 'absolute',
-          top: -128,
-          left: -128,
-          width: 384,
-          height: 384,
-          backgroundColor: `${C.primary}1A`,
-          borderRadius: '50%',
-          filter: 'blur(60px)',
-          pointerEvents: 'none',
-        }}
-      />
-      <div
-        style={{
-          position: 'absolute',
-          bottom: -128,
-          right: '25%',
-          width: 384,
-          height: 384,
-          backgroundColor: `${C.secondaryContainer}1A`,
-          borderRadius: '50%',
-          filter: 'blur(60px)',
-          pointerEvents: 'none',
-        }}
-      />
-
-      {/* Main shell */}
-      <div
-        style={{
-          width: '100%',
-          maxWidth: 1100,
-          backgroundColor: C.surfaceContainer,
-          borderRadius: 16,
-          boxShadow: '0 32px 64px rgba(0,0,0,0.5)',
-          overflow: 'hidden',
-          display: 'grid',
-          gridTemplateColumns: '5fr 7fr',
+          backgroundColor: C.surfaceContainerLowest,
+          padding: '32px 40px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
           position: 'relative',
-          zIndex: 10,
+          overflow: 'hidden',
+          height: '100vh',
+          boxSizing: 'border-box',
         }}
       >
-        {/* ── LEFT: Feature Panel ── */}
-        <aside
+        {/* Ambient glows */}
+        <div
           style={{
-            backgroundColor: C.surfaceContainerLow,
-            padding: 40,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            position: 'relative',
-            overflow: 'hidden',
+            position: 'absolute',
+            top: -96,
+            left: -96,
+            width: 384,
+            height: 384,
+            backgroundColor: `${C.primary}1A`,
+            borderRadius: '50%',
+            filter: 'blur(60px)',
+            pointerEvents: 'none',
           }}
-        >
-          {/* Dot grid pattern */}
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              opacity: 0.15,
-              pointerEvents: 'none',
-              backgroundImage: 'radial-gradient(#68dba9 1px, transparent 1px)',
-              backgroundSize: '18px 18px',
-            }}
-          />
-          {/* Ambient halos */}
-          <div
-            style={{
-              position: 'absolute',
-              top: '25%',
-              left: -48,
-              width: 240,
-              height: 240,
-              backgroundColor: `${C.primary}26`,
-              borderRadius: '50%',
-              filter: 'blur(40px)',
-              pointerEvents: 'none',
-            }}
-          />
-          <div
-            style={{
-              position: 'absolute',
-              bottom: '33%',
-              right: -48,
-              width: 192,
-              height: 192,
-              backgroundColor: `${C.secondaryContainer}26`,
-              borderRadius: '50%',
-              filter: 'blur(40px)',
-              pointerEvents: 'none',
-            }}
-          />
+        />
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 40,
+            right: -80,
+            width: 320,
+            height: 320,
+            backgroundColor: `${C.secondaryContainer}26`,
+            borderRadius: '50%',
+            filter: 'blur(60px)',
+            pointerEvents: 'none',
+          }}
+        />
+        {/* Grid overlay */}
+        <div style={{ position: 'absolute', inset: 0, opacity: 0.15, pointerEvents: 'none' }}>
+          <svg width="100%" height="100%">
+            <defs>
+              <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+                <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#3d4a42" strokeWidth="0.5" />
+                <circle cx="0" cy="0" r="1" fill="#68dba9" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+          </svg>
+        </div>
 
+        {/* Brand & Back Button */}
+        <div style={{ position: 'relative', zIndex: 10 }}>
           <div
             style={{
-              position: 'relative',
-              zIndex: 10,
               display: 'flex',
-              flexDirection: 'column',
-              gap: 24,
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: 24,
             }}
           >
-            {/* Top row: Badge & Back to Home */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <span
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: 6,
-                    padding: '4px 12px',
-                    borderRadius: 9999,
-                    backgroundColor: `${C.primary}1A`,
-                    color: C.primary,
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: 11,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.06em',
-                  }}
-                >
-                  <span
-                    style={{
-                      width: 6,
-                      height: 6,
-                      borderRadius: '50%',
-                      backgroundColor: C.primary,
-                      display: 'inline-block',
-                    }}
-                  />
-                  Runtime v4.2 Active
-                </span>
-                <span
-                  style={{
-                    color: C.onSurfaceVariant,
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: 11,
-                  }}
-                >
-                  WASM Engine 60fps
-                </span>
-              </div>
-
-              <Link
-                href="/"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  padding: '6px 12px',
-                  borderRadius: 8,
-                  backgroundColor: C.surfaceContainerHigh,
-                  color: C.textHeading,
-                  fontSize: 12,
-                  fontWeight: 500,
-                  textDecoration: 'none',
-                  transition: 'background-color 0.2s',
-                }}
-              >
-                <ArrowLeft size={14} /> Back to Home
-              </Link>
-            </div>
-
-            {/* Headline */}
-            <div>
-              <h1
-                style={{
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  fontSize: 32,
-                  fontWeight: 700,
-                  color: C.textHeading,
-                  letterSpacing: '-0.02em',
-                  marginBottom: 12,
-                }}
-              >
-                Level up your dev skills visually.
-              </h1>
-              <p style={{ fontSize: 14, color: C.onSurfaceVariant, lineHeight: 1.7 }}>
-                Watch memory allocations, pointer shifts, recursion trees, and distributed event
-                streams execute in real time.
-              </p>
-            </div>
-
-            {/* Live heap card */}
-            <div
-              style={{
-                backgroundColor: C.surfaceInset,
-                borderRadius: 16,
-                padding: 20,
-                boxShadow: '0 16px 48px rgba(0,0,0,0.4)',
-                position: 'relative',
-                overflow: 'hidden',
-              }}
-            >
-              {/* Terminal header */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <div
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  marginBottom: 12,
-                  paddingBottom: 12,
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <span
-                    style={{
-                      width: 10,
-                      height: 10,
-                      borderRadius: '50%',
-                      backgroundColor: `${C.error}B3`,
-                      display: 'inline-block',
-                    }}
-                  />
-                  <span
-                    style={{
-                      width: 10,
-                      height: 10,
-                      borderRadius: '50%',
-                      backgroundColor: `${C.secondaryContainer}B3`,
-                      display: 'inline-block',
-                    }}
-                  />
-                  <span
-                    style={{
-                      width: 10,
-                      height: 10,
-                      borderRadius: '50%',
-                      backgroundColor: `${C.primary}B3`,
-                      display: 'inline-block',
-                    }}
-                  />
-                  <span
-                    style={{
-                      fontFamily: "'JetBrains Mono', monospace",
-                      fontSize: 13,
-                      color: C.onSurface,
-                      marginLeft: 8,
-                    }}
-                  >
-                    heap_traversal.ts
-                  </span>
-                </div>
-                <span
-                  style={{
-                    padding: '2px 8px',
-                    borderRadius: 4,
-                    backgroundColor: C.surfaceContainer,
-                    color: C.primary,
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: 11,
-                  }}
-                >
-                  Active Run
-                </span>
-              </div>
-
-              {/* Code snippet */}
-              <pre
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: 13,
-                  lineHeight: 1.6,
-                  margin: '0 0 12px',
-                  padding: '8px 10px',
-                  borderRadius: 6,
-                  backgroundColor: `${C.surfaceContainerLowest}CC`,
-                  overflowX: 'auto',
-                }}
-              >
-                <code>
-                  <span style={{ color: C.onSurfaceVariant }}>
-                    {'// Live Heap Allocation & Pointer Traversal'}
-                  </span>
-                  {'\n'}
-                  <span style={{ color: C.primary }}>const</span>
-                  {' ['}
-                  <span style={{ color: C.secondary }}>head</span>
-                  {', current] = '}
-                  <span style={{ color: C.primaryContainer, fontWeight: 500 }}>useLinkedList</span>
-                  {`(nodes);\ncurrent.next = `}
-                  <span style={{ color: C.primary }}>rotateRight</span>
-                  {`(head, `}
-                  <span style={{ color: C.secondary }}>2</span>
-                  {');'}
-                </code>
-              </pre>
-
-              {/* Memory nodes */}
-              <div style={{ marginBottom: 12 }}>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: 11,
-                    color: C.onSurfaceVariant,
-                    marginBottom: 8,
-                  }}
-                >
-                  <span>HEAP DEREFERENCE</span>
-                  <span style={{ color: C.primary }}>Step 3/6 • Allocated 256B</span>
-                </div>
-                <div
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr auto 1fr',
-                    gap: 8,
-                    alignItems: 'center',
-                  }}
-                >
-                  <div
-                    style={{
-                      backgroundColor: C.surfaceContainer,
-                      padding: '8px 10px',
-                      borderRadius: 6,
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: 10,
-                        color: C.textMuted,
-                      }}
-                    >
-                      ADDR 0x7FF1
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
-                      <span
-                        style={{
-                          width: 8,
-                          height: 8,
-                          borderRadius: '50%',
-                          backgroundColor: C.primary,
-                          display: 'inline-block',
-                        }}
-                      />
-                      <span
-                        style={{
-                          fontFamily: "'JetBrains Mono', monospace",
-                          fontSize: 13,
-                          color: C.textHeading,
-                          fontWeight: 600,
-                        }}
-                      >
-                        Node(42)
-                      </span>
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      color: C.primary,
-                    }}
-                  >
-                    <ArrowRight size={18} />
-                    <span
-                      style={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: 9,
-                        color: C.onSurfaceVariant,
-                      }}
-                    >
-                      ptr.next
-                    </span>
-                  </div>
-                  <div
-                    style={{
-                      backgroundColor: C.surfaceContainerHigh,
-                      padding: '8px 10px',
-                      borderRadius: 6,
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: 10,
-                        color: C.textMuted,
-                      }}
-                    >
-                      ADDR 0x7FF9
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
-                      <span
-                        style={{
-                          width: 8,
-                          height: 8,
-                          borderRadius: '50%',
-                          backgroundColor: C.secondaryContainer,
-                          display: 'inline-block',
-                        }}
-                      />
-                      <span
-                        style={{
-                          fontFamily: "'JetBrains Mono', monospace",
-                          fontSize: 13,
-                          color: C.textHeading,
-                          fontWeight: 600,
-                        }}
-                      >
-                        Node(88)
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Execution flow */}
-              <div
-                style={{
+                  width: 36,
                   height: 36,
-                  borderRadius: 6,
-                  backgroundColor: C.surfaceContainerLowest,
-                  display: 'flex',
-                  alignItems: 'center',
-                  padding: '0 12px',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <TrendingUp size={32} style={{ color: C.primary, width: '60%' }} />
-                <span
-                  style={{
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: 10,
-                    color: C.textMuted,
-                  }}
-                >
-                  JIT Pipelined
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Testimonial */}
-          <div style={{ position: 'relative', zIndex: 10 }}>
-            <div
-              style={{
-                backgroundColor: `${C.surfaceCard}E6`,
-                backdropFilter: 'blur(8px)',
-                padding: '12px 16px',
-                borderRadius: 12,
-                display: 'flex',
-                alignItems: 'center',
-                gap: 12,
-                boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
-              }}
-            >
-              <div
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: '50%',
+                  borderRadius: 10,
                   backgroundColor: C.surfaceContainerHigh,
-                  flexShrink: 0,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  fontWeight: 700,
-                  color: C.primary,
-                  fontSize: 16,
+                  boxShadow: '0 4px 16px rgba(0,0,0,0.4)',
                 }}
               >
-                E
+                <svg width="22" height="22" viewBox="0 0 100 100" fill="none">
+                  <rect width="100" height="100" rx="22" fill="#0B1326" />
+                  <path
+                    d="M32 32L18 50L32 68"
+                    stroke="#059669"
+                    strokeWidth="8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <circle cx="50" cy="50" r="15" stroke="#059669" strokeWidth="5" />
+                  <circle cx="50" cy="50" r="6" fill="#10B981" />
+                  <path
+                    d="M68 32L82 50L68 68"
+                    stroke="#EA580C"
+                    strokeWidth="8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
               </div>
               <div>
-                <p style={{ fontSize: 12, color: C.onSurface, margin: 0, fontStyle: 'italic' }}>
-                  &ldquo;Cut our core infrastructure onboarding ramp by 60%.&rdquo;
-                </p>
-                <span
-                  style={{
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: 11,
-                    color: C.onSurfaceVariant,
-                  }}
-                >
-                  Elena Rostova, Staff Platform Architect @ HyperMesh
-                </span>
-              </div>
-            </div>
-          </div>
-        </aside>
-
-        {/* ── RIGHT: Auth Form ── */}
-        <section
-          style={{
-            backgroundColor: C.surface,
-            padding: 48,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'relative',
-          }}
-        >
-          <div
-            style={{
-              position: 'absolute',
-              top: '50%',
-              right: 48,
-              width: 288,
-              height: 288,
-              backgroundColor: `${C.primary}0D`,
-              borderRadius: '50%',
-              filter: 'blur(60px)',
-              pointerEvents: 'none',
-            }}
-          />
-
-          <div
-            style={{
-              width: '100%',
-              maxWidth: 420,
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 20,
-              position: 'relative',
-              zIndex: 10,
-            }}
-          >
-            {/* Brand header */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <div
-                  style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 10,
-                    backgroundColor: C.surfaceContainerHigh,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <svg width="22" height="22" viewBox="0 0 100 100" fill="none">
-                    <rect width="100" height="100" rx="22" fill="#0B1326" />
-                    <path
-                      d="M32 32L18 50L32 68"
-                      stroke="#059669"
-                      strokeWidth="8"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <circle cx="50" cy="50" r="15" stroke="#059669" strokeWidth="5" />
-                    <circle cx="50" cy="50" r="6" fill="#10B981" />
-                    <path
-                      d="M68 32L82 50L68 68"
-                      stroke="#EA580C"
-                      strokeWidth="8"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <div
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <span
                     style={{
                       fontFamily: "'Plus Jakarta Sans', sans-serif",
-                      fontSize: 18,
+                      fontSize: 16,
                       fontWeight: 700,
                       color: C.textHeading,
                     }}
                   >
                     Visual Dev Docs
-                  </div>
-                  <div
+                  </span>
+                  <span
                     style={{
                       fontFamily: "'JetBrains Mono', monospace",
                       fontSize: 10,
-                      color: C.onSurfaceVariant,
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.06em',
+                      padding: '2px 6px',
+                      borderRadius: 9999,
+                      backgroundColor: `${C.primary}1A`,
+                      color: C.primary,
                     }}
                   >
-                    Interactive Engineering Lab
-                  </div>
+                    v2.4 LTS
+                  </span>
                 </div>
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  padding: '4px 10px',
-                  borderRadius: 6,
-                  backgroundColor: C.surfaceContainerHigh,
-                  color: C.primary,
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: 11,
-                }}
-              >
-                v2.8
+                <p style={{ fontSize: 11, color: C.textMuted, margin: 0 }}>
+                  Interactive Code Architecture Engine
+                </p>
               </div>
             </div>
 
+            <Link
+              href="/"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                padding: '6px 12px',
+                borderRadius: 8,
+                backgroundColor: C.surfaceContainerHigh,
+                color: C.textHeading,
+                fontSize: 12,
+                fontWeight: 500,
+                textDecoration: 'none',
+                transition: 'background-color 0.2s',
+              }}
+            >
+              <ArrowLeft size={14} /> Back to Home
+            </Link>
+          </div>
+
+          {/* Eyebrow + headline */}
+          <div style={{ marginBottom: 20 }}>
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                padding: '3px 10px',
+                borderRadius: 9999,
+                backgroundColor: C.surfaceContainerHigh,
+                color: C.primary,
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: 10,
+                marginBottom: 12,
+              }}
+            >
+              <span
+                style={{
+                  width: 5,
+                  height: 5,
+                  borderRadius: '50%',
+                  backgroundColor: C.primary,
+                  display: 'inline-block',
+                }}
+              />
+              RUNTIME VISUALIZATION SUITE
+            </div>
+            <h1
+              style={{
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontSize: 26,
+                fontWeight: 700,
+                color: C.textHeading,
+                letterSpacing: '-0.02em',
+                lineHeight: 1.2,
+                marginBottom: 10,
+              }}
+            >
+              Build intuition through{' '}
+              <span
+                style={{
+                  background: `linear-gradient(90deg, ${C.primary}, ${C.primaryFixed}, ${C.secondary})`,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+              >
+                visual execution.
+              </span>
+            </h1>
+            <p style={{ fontSize: 13, color: C.textMuted, lineHeight: 1.6, margin: 0 }}>
+              Join 45,000+ systems engineers, cloud architects, and compiler developers mastering
+              complex runtimes.
+            </p>
+          </div>
+
+          {/* Feature badges */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {[
+              {
+                icon: '💾',
+                text: 'Instant WASM sandboxes for Go, Rust, C++, and Python',
+                color: C.primary,
+              },
+              {
+                icon: '🌲',
+                text: 'Interactive dynamic memory graphs & call stack inspector',
+                color: C.secondaryContainer,
+              },
+              {
+                icon: '✨',
+                text: 'AI-powered architecture and complexity visualizer',
+                color: C.primary,
+              },
+            ].map(({ icon, text, color }) => (
+              <div
+                key={text}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 10,
+                  padding: '8px 12px',
+                  borderRadius: 10,
+                  backgroundColor: `${C.surfaceContainerLow}E6`,
+                }}
+              >
+                <div
+                  style={{
+                    width: 24,
+                    height: 24,
+                    borderRadius: 6,
+                    backgroundColor: `${color}26`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: 12,
+                  }}
+                >
+                  {icon}
+                </div>
+                <span style={{ fontSize: 12, color: C.onSurface }}>{text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Call stack terminal preview */}
+        <div
+          style={{
+            position: 'relative',
+            zIndex: 10,
+            marginTop: 16,
+            borderRadius: 16,
+            backgroundColor: `${C.surfaceCard}E6`,
+            backdropFilter: 'blur(8px)',
+            padding: 14,
+            boxShadow: '0 16px 40px rgba(0,0,0,0.4)',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: 10,
+              paddingBottom: 8,
+              borderBottom: `1px solid ${C.surfaceContainerHigh}66`,
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span
+                style={{
+                  width: 8,
+                  height: 8,
+                  borderRadius: '50%',
+                  backgroundColor: C.error,
+                  display: 'inline-block',
+                }}
+              />
+              <span
+                style={{
+                  width: 8,
+                  height: 8,
+                  borderRadius: '50%',
+                  backgroundColor: C.secondary,
+                  display: 'inline-block',
+                }}
+              />
+              <span
+                style={{
+                  width: 8,
+                  height: 8,
+                  borderRadius: '50%',
+                  backgroundColor: C.primary,
+                  display: 'inline-block',
+                }}
+              />
+              <span
+                style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 10,
+                  color: C.textMuted,
+                  marginLeft: 6,
+                }}
+              >
+                quick_sort.rs [WASM-JIT]
+              </span>
+            </div>
+            <span
+              style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: 10,
+                color: C.primary,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 4,
+              }}
+            >
+              ⚡ 0.04ms cycle
+            </span>
+          </div>
+          {[
+            {
+              frame: 'FRAME 03',
+              fn: 'partition(&mut arr, low, high)',
+              sp: '0x7ffd18',
+              active: true,
+            },
+            { frame: 'FRAME 02', fn: 'quick_sort(&mut arr, 0, 7)', sp: '0x7ffd30', active: false },
+          ].map(({ frame, fn, sp, active }) => (
+            <div
+              key={frame}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '6px 8px',
+                borderRadius: 6,
+                backgroundColor: active ? C.surfaceInset : `${C.surfaceContainerHigh}99`,
+                marginBottom: 6,
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span
+                  style={{
+                    padding: '1px 5px',
+                    borderRadius: 4,
+                    backgroundColor: active ? `${C.primary}33` : C.surfaceContainer,
+                    color: active ? C.primary : C.textMuted,
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: 10,
+                  }}
+                >
+                  {frame}
+                </span>
+                <span
+                  style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: 11,
+                    color: active ? C.textHeading : C.onSurfaceVariant,
+                  }}
+                >
+                  {fn}
+                </span>
+              </div>
+              <span
+                style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 10,
+                  color: C.textMuted,
+                }}
+              >
+                {sp}
+              </span>
+            </div>
+          ))}
+          <div
+            style={{
+              marginTop: 10,
+              paddingTop: 8,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+              <button
+                style={{
+                  padding: '4px 6px',
+                  borderRadius: 6,
+                  backgroundColor: C.surfaceContainer,
+                  border: 'none',
+                  color: C.onSurface,
+                  cursor: 'pointer',
+                  fontSize: 11,
+                }}
+              >
+                ⏮
+              </button>
+              <button
+                style={{
+                  padding: '4px 6px',
+                  borderRadius: 6,
+                  backgroundColor: C.primary,
+                  border: 'none',
+                  color: C.onPrimary,
+                  cursor: 'pointer',
+                  fontSize: 11,
+                }}
+              >
+                ▶
+              </button>
+              <button
+                style={{
+                  padding: '4px 6px',
+                  borderRadius: 6,
+                  backgroundColor: C.surfaceContainer,
+                  border: 'none',
+                  color: C.onSurface,
+                  cursor: 'pointer',
+                  fontSize: 11,
+                }}
+              >
+                ⏭
+              </button>
+              <span
+                style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 10,
+                  color: C.textMuted,
+                  marginLeft: 6,
+                }}
+              >
+                Step 14 of 42
+              </span>
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 4,
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: 10,
+                color: C.secondary,
+              }}
+            >
+              <span
+                style={{
+                  width: 6,
+                  height: 6,
+                  borderRadius: '50%',
+                  backgroundColor: C.secondary,
+                  display: 'inline-block',
+                }}
+              />
+              Heap: 4.2 MB alloc
+            </div>
+          </div>
+        </div>
+
+        {/* Quote footer */}
+        <div
+          style={{
+            position: 'relative',
+            zIndex: 10,
+            marginTop: 12,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 10,
+          }}
+        >
+          <div
+            style={{
+              width: 28,
+              height: 28,
+              borderRadius: '50%',
+              backgroundColor: C.surfaceContainerHighest,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontWeight: 700,
+              color: C.primary,
+              fontSize: 14,
+            }}
+          >
+            λ
+          </div>
+          <p style={{ fontSize: 11, color: C.textMuted, fontStyle: 'italic', margin: 0 }}>
+            &ldquo;The interactive memory pointer graphs completely replaced our whiteboard system
+            design drills.&rdquo;
+          </p>
+        </div>
+      </div>
+
+      {/* ── RIGHT: Login form ── */}
+      <div
+        style={{
+          backgroundColor: C.surface,
+          padding: '24px 32px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+          boxSizing: 'border-box',
+        }}
+      >
+        <div style={{ width: '100%', maxWidth: 440 }}>
+          {/* Card */}
+          <div
+            style={{
+              borderRadius: 16,
+              backgroundColor: `${C.surfaceCard}E6`,
+              backdropFilter: 'blur(16px)',
+              padding: 24,
+              boxShadow: '0 20px 48px rgba(0,0,0,0.4)',
+            }}
+          >
             {/* Tab switcher */}
             <div
               style={{
-                backgroundColor: C.surfaceContainerLowest,
-                padding: 4,
-                borderRadius: 12,
                 display: 'flex',
-                gap: 4,
+                padding: 3,
+                borderRadius: 10,
+                backgroundColor: C.surfaceInset,
+                marginBottom: 16,
               }}
             >
               <button
                 style={{
                   flex: 1,
-                  padding: '8px 12px',
-                  borderRadius: 8,
-                  backgroundColor: C.surfaceCard,
+                  padding: '6px 12px',
+                  borderRadius: 6,
+                  backgroundColor: C.surfaceContainerHigh,
                   color: C.textHeading,
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  fontSize: 14,
+                  fontSize: 13,
                   fontWeight: 600,
                   border: 'none',
                   cursor: 'pointer',
-                  boxShadow: '0 1px 4px rgba(0,0,0,0.2)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 6,
                 }}
               >
                 Sign In
@@ -677,18 +597,16 @@ export default function LoginPage() {
                 href="/register"
                 style={{
                   flex: 1,
-                  padding: '8px 12px',
-                  borderRadius: 8,
+                  padding: '6px 12px',
+                  borderRadius: 6,
                   backgroundColor: 'transparent',
-                  color: C.onSurfaceVariant,
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  fontSize: 14,
-                  fontWeight: 500,
+                  color: C.textMuted,
+                  fontSize: 13,
+                  fontWeight: 600,
                   textDecoration: 'none',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: 6,
                 }}
               >
                 Create Account
@@ -696,26 +614,26 @@ export default function LoginPage() {
             </div>
 
             {/* Title */}
-            <div>
-              <h2
-                style={{
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  fontSize: 24,
-                  fontWeight: 700,
-                  color: C.textHeading,
-                  margin: '0 0 6px',
-                  letterSpacing: '-0.01em',
-                }}
-              >
-                Welcome back, engineer
-              </h2>
-              <p style={{ fontSize: 14, color: C.onSurfaceVariant, margin: 0 }}>
-                Enter your credentials to access your sandboxes and interactive diagrams.
-              </p>
-            </div>
+            <h2
+              style={{
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontSize: 20,
+                fontWeight: 700,
+                color: C.textHeading,
+                margin: '0 0 4px',
+                letterSpacing: '-0.01em',
+              }}
+            >
+              Welcome back, engineer
+            </h2>
+            <p style={{ fontSize: 12, color: C.textMuted, margin: '0 0 16px' }}>
+              Enter your credentials to access your sandboxes and interactive diagrams.
+            </p>
 
             {/* OAuth */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+            <div
+              style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 14 }}
+            >
               {[
                 {
                   label: 'GitHub',
@@ -735,22 +653,22 @@ export default function LoginPage() {
                 {
                   label: 'Google',
                   icon: (
-                    <svg viewBox="0 0 24 24" style={{ width: 16, height: 16 }}>
+                    <svg viewBox="0 0 24 24" style={{ width: 14, height: 14 }}>
                       <path
-                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                        d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.4 1 3.5 3.6 1.6 7.4l3.7 2.9C6.2 7.3 8.9 5 12 5z"
+                        fill="#EA4335"
+                      />
+                      <path
+                        d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"
                         fill="#4285F4"
                       />
                       <path
-                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                        fill="#34A853"
-                      />
-                      <path
-                        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
+                        d="M5.3 14.7c-.2-.7-.4-1.5-.4-2.7s.1-2 .4-2.7L1.6 6.4C.6 8.3 0 10.1 0 12s.6 3.7 1.6 5.6l3.7-2.9z"
                         fill="#FBBC05"
                       />
                       <path
-                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
-                        fill="#EA4335"
+                        d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3.1 0-5.8-2.3-6.7-5.3L1.6 16C3.5 19.8 7.4 23 12 23z"
+                        fill="#34A853"
                       />
                     </svg>
                   ),
@@ -763,12 +681,12 @@ export default function LoginPage() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: 8,
-                    padding: '10px 12px',
-                    borderRadius: 12,
-                    backgroundColor: C.surfaceCard,
+                    padding: '8px 12px',
+                    borderRadius: 10,
+                    backgroundColor: C.surfaceContainerLow,
                     border: 'none',
-                    color: C.textHeading,
-                    fontSize: 14,
+                    color: C.onSurface,
+                    fontSize: 13,
                     fontWeight: 500,
                     cursor: 'pointer',
                   }}
@@ -785,16 +703,19 @@ export default function LoginPage() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                margin: '2px 0 14px',
               }}
             >
-              <div style={{ width: '100%', height: 1, backgroundColor: `${C.borderSubtle}80` }} />
+              <div
+                style={{ width: '100%', height: 1, backgroundColor: C.surfaceContainerHighest }}
+              />
               <span
                 style={{
                   position: 'absolute',
-                  backgroundColor: C.surface,
-                  padding: '0 12px',
+                  padding: '0 10px',
+                  backgroundColor: C.surfaceCard,
                   fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: 11,
+                  fontSize: 10,
                   color: C.textMuted,
                   textTransform: 'uppercase',
                   letterSpacing: '0.06em',
@@ -804,60 +725,41 @@ export default function LoginPage() {
               </span>
             </div>
 
-            {/* Form */}
             <form
               onSubmit={(e) => e.preventDefault()}
-              style={{ display: 'flex', flexDirection: 'column', gap: 14 }}
+              style={{ display: 'flex', flexDirection: 'column', gap: 12 }}
             >
-              {/* Email */}
+              {/* Work Email */}
               <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-                  <label
-                    style={{
-                      fontFamily: "'JetBrains Mono', monospace",
-                      fontSize: 11,
-                      color: C.onSurfaceVariant,
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.06em',
-                    }}
-                  >
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+                  <label style={{ fontSize: 12, fontWeight: 500, color: C.textHeading }}>
                     Work Email Address
                   </label>
-                  <span
-                    style={{
-                      fontFamily: "'JetBrains Mono', monospace",
-                      fontSize: 11,
-                      color: C.textMuted,
-                    }}
-                  >
-                    name@company.com
-                  </span>
                 </div>
                 <div style={{ position: 'relative' }}>
                   <span
                     style={{
                       position: 'absolute',
-                      left: 12,
+                      left: 10,
                       top: '50%',
                       transform: 'translateY(-50%)',
                       color: C.textMuted,
                       fontSize: 14,
                     }}
                   >
-                    @
+                    ✉
                   </span>
                   <input
                     type="email"
-                    placeholder="alex@engineering.io"
-                    required
+                    placeholder="alex@company.io"
+                    defaultValue="alex@company.io"
                     style={{
                       width: '100%',
                       backgroundColor: C.surfaceInset,
-                      color: C.onSurface,
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: 14,
-                      padding: '10px 12px 10px 32px',
-                      borderRadius: 8,
+                      color: C.textHeading,
+                      fontSize: 13,
+                      padding: '8px 10px 8px 32px',
+                      borderRadius: 10,
                       border: 'none',
                       outline: 'none',
                       boxSizing: 'border-box',
@@ -868,55 +770,42 @@ export default function LoginPage() {
 
               {/* Password */}
               <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-                  <label
-                    style={{
-                      fontFamily: "'JetBrains Mono', monospace",
-                      fontSize: 11,
-                      color: C.onSurfaceVariant,
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.06em',
-                    }}
-                  >
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+                  <label style={{ fontSize: 12, fontWeight: 500, color: C.textHeading }}>
                     Password
                   </label>
-                  <a
-                    href="#"
-                    style={{
-                      fontFamily: "'JetBrains Mono', monospace",
-                      fontSize: 11,
-                      color: C.secondary,
-                      textDecoration: 'none',
-                    }}
+                  <Link
+                    href="/forgot-password"
+                    style={{ fontSize: 12, color: C.primary, textDecoration: 'none' }}
                   >
                     Forgot password?
-                  </a>
+                  </Link>
                 </div>
                 <div style={{ position: 'relative' }}>
                   <span
                     style={{
                       position: 'absolute',
-                      left: 12,
+                      left: 10,
                       top: '50%',
                       transform: 'translateY(-50%)',
                       color: C.textMuted,
                       fontSize: 14,
                     }}
                   >
-                    🔑
+                    🔒
                   </span>
                   <input
                     type={showPassword ? 'text' : 'password'}
-                    placeholder="••••••••••••"
-                    required
+                    placeholder="Enter your password"
+                    defaultValue="RustRuntime2025#"
                     style={{
                       width: '100%',
                       backgroundColor: C.surfaceInset,
-                      color: C.onSurface,
+                      color: C.textHeading,
                       fontFamily: "'JetBrains Mono', monospace",
-                      fontSize: 14,
-                      padding: '10px 40px 10px 32px',
-                      borderRadius: 8,
+                      fontSize: 13,
+                      padding: '8px 36px 8px 32px',
+                      borderRadius: 10,
                       border: 'none',
                       outline: 'none',
                       boxSizing: 'border-box',
@@ -927,7 +816,7 @@ export default function LoginPage() {
                     onClick={() => setShowPassword(!showPassword)}
                     style={{
                       position: 'absolute',
-                      right: 12,
+                      right: 10,
                       top: '50%',
                       transform: 'translateY(-50%)',
                       background: 'none',
@@ -937,14 +826,19 @@ export default function LoginPage() {
                       padding: 0,
                     }}
                   >
-                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                    {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                   </button>
                 </div>
               </div>
 
               {/* Remember me */}
               <div
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginTop: 2,
+                }}
               >
                 <label
                   style={{
@@ -952,25 +846,16 @@ export default function LoginPage() {
                     alignItems: 'center',
                     gap: 8,
                     cursor: 'pointer',
-                    fontSize: 13,
-                    color: C.onSurfaceVariant,
-                  }}
-                >
-                  <input type="checkbox" defaultChecked style={{ accentColor: C.primary }} />{' '}
-                  Remember device for 30 days
-                </label>
-                <span
-                  style={{
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: 11,
+                    fontSize: 12,
                     color: C.textMuted,
                   }}
                 >
-                  SSH Key Sync
-                </span>
+                  <input type="checkbox" defaultChecked style={{ accentColor: C.primary }} />
+                  <span>Remember device for 30 days</span>
+                </label>
               </div>
 
-              {/* Submit */}
+              {/* CTA */}
               <button
                 type="submit"
                 style={{
@@ -978,38 +863,37 @@ export default function LoginPage() {
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: 8,
-                  padding: '14px 24px',
-                  borderRadius: 12,
-                  backgroundColor: C.primaryContainer,
+                  padding: '10px 18px',
+                  borderRadius: 10,
+                  backgroundColor: C.primary,
                   color: C.onPrimary,
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
                   fontWeight: 700,
-                  fontSize: 15,
+                  fontSize: 14,
                   border: 'none',
                   cursor: 'pointer',
-                  boxShadow: '0 4px 20px rgba(37,164,117,0.3)',
+                  boxShadow: '0 4px 20px rgba(104,219,169,0.3)',
+                  marginTop: 4,
                 }}
               >
-                Sign In to Workspace <ArrowRight size={18} />
+                Sign In to Workspace <ArrowRight size={16} />
               </button>
             </form>
 
-            {/* Security badge */}
-            <div
+            {/* Security */}
+            <p
               style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 8,
-                color: C.textMuted,
+                textAlign: 'center',
                 fontFamily: "'JetBrains Mono', monospace",
-                fontSize: 11,
+                fontSize: 10,
+                color: C.textMuted,
+                margin: '12px 0 0',
               }}
             >
-              🔒 Secured by Better Auth. Session encrypted with AES-256 GCM.
-            </div>
+              🛡 Secured by Better Auth. AES-256 encrypted session.
+            </p>
           </div>
-        </section>
+        </div>
       </div>
     </div>
   );
