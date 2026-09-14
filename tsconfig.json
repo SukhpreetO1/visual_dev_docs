@@ -12,7 +12,7 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "@visual-dev-docs/*": ["packages/*/src"]
+      "@visual-dev-docs/*": ["packages/*/dist"]
     }
   },
   "exclude": ["node_modules", "dist", ".next"]

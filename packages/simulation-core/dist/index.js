@@ -1,2 +1,2 @@
-export const name = 'simulation-core';
+export * from './SimulationCore';
 //# sourceMappingURL=index.js.map

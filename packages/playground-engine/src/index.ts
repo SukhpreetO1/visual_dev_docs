@@ -1,1 +1,1 @@
-export const name = 'playground-engine';
+export * from './PlaygroundEngine';

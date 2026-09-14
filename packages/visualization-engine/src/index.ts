@@ -1,1 +1,1 @@
-export const name = 'visualization-engine';
+export * from './VisualizationEngine';

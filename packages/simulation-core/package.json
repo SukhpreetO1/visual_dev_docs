@@ -12,5 +12,9 @@
     "lint": "eslint src/**/*.ts",
     "type-check": "tsc --noEmit"
   },
+  "dependencies": {
+    "@visual-dev-docs/shared-types": "workspace:*"
+  },
   "license": "MIT"
 }
+

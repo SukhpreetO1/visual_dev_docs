@@ -12,5 +12,20 @@
     "lint": "eslint src/**/*.ts",
     "type-check": "tsc --noEmit"
   },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "react": "^19.0.0"
+  },
+  "dependencies": {
+    "@visual-dev-docs/shared-types": "workspace:*",
+    "@visual-dev-docs/shared-utils": "workspace:*"
+  },
   "license": "MIT"
 }
+
+
